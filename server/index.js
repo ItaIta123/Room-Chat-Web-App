@@ -19,12 +19,7 @@ const app = express();
 const server = http.createServer(app);
 
 // initialize we socket
-const io = socket_io(server, {
-  cors: {
-    origin: "http://localhost:3000",
-    credentials: true,
-  },
-});
+const io = socket_io(server);
 
 // on even that connection is ready
 io.on("connection", (socket) => {
