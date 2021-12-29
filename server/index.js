@@ -2,6 +2,7 @@ const express = require("express"); // using 'require' and not 'import' because 
 const socket_io = require("socket.io");
 const http = require("http");
 const router = require("./router");
+const cors = require("cors");
 
 // importing helper functions
 const {
@@ -100,5 +101,6 @@ io.on("connection", (socket) => {
 
 // using routing created in router.js
 app.use(router);
+app.use(cors())
 
 server.listen(PORT, () => console.log(`Server has started on PORT ${PORT}.`));

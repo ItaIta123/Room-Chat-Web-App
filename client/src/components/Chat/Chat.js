@@ -27,7 +27,7 @@ const Chat = (location) => {
   const [message, setMessage] = useState("");
   const [messagesArray, setMessagesArray] = useState([]);
 
-  const ENDPOINT = "localhost:5001";
+  const ENDPOINT = "https://react-chat-web-app-itamar.herokuapp.com/";
   let query = useQuery();
 
   // sending message function
