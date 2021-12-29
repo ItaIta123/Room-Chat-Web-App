@@ -27,7 +27,7 @@ const io = socket_io(server, {
 
 // on even that connection is ready
 io.on("connection", (socket) => {
-  console.log("Web Socket in Open!");
+  // console.log("Web Socket in Open!");
 
   // when a user joins the web socket connection
   socket.on("join", ({ name, room }, callback) => {
@@ -81,7 +81,7 @@ io.on("connection", (socket) => {
     // when disconnecting from the page the user will be removed from the users array
     const user = remove_user(socket.id);
     if (user) {
-      console.log(`User name: ${user.name} is and room is ${user.room}`);
+      // console.log(`User name: ${user.name} is and room is ${user.room}`);
     }
     if (user) {
       io.to(user.room).emit("message", {
