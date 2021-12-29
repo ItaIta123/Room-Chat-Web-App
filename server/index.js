@@ -31,6 +31,7 @@ io.on("connection", (socket) => {
 
   // when a user joins the web socket connection
   socket.on("join", ({ name, room }, callback) => {
+    //console.log("recieved a Join event")
     // socket.id = a specific ID for each user using this socket
     const { user, error } = add_user({ id: socket.id, name, room });
 
@@ -39,19 +40,25 @@ io.on("connection", (socket) => {
 
     // emit a system welcome message -> only the user itself can see that
     // this is from backend to front end (emit)
-    socket.emit("admin message", {
+    socket.emit("message", {
       user: "admin",
       text: `Hey ${user.name}! Welcome to ${user.room}`,
     });
 
     // broadcast is a method to send a message to everyone except the user
-    socket.broadcast.to(user.room).emit("admin message", {
+    socket.broadcast.to(user.room).emit("message", {
       user: "admin",
-      message: `${user.name} had joined the room`,
+      text: `${user.name} had joined the room`,
     });
 
     // join method - a built in method of socket.io
     socket.join(user.room);
+
+    // send to client side all users in the room
+    io.to(user.room).emit("roomData", {
+      room: user.room,
+      users: get_users_in_room(user.room),
+    });
 
     // success
     callback();
@@ -59,16 +66,35 @@ io.on("connection", (socket) => {
 
   // listening to user messages from the front end
   socket.on("user message", (message, callback) => {
+    //console.log('Recieved a user message on the backend');
     const user = get_user(socket.id);
-
+    // console.log(`User is: ${user}`);
     // send message to the whole room. Using 'io' as its the "parent" of the entire socket
     io.to(user.room).emit("message", { user: user.name, text: message });
 
     callback();
   });
 
-  socket.on("DISCONNECT", () => {
-    console.log("User left :(, we socket closed");
+  socket.on("disconnect", () => {
+    console.log("User left");
+
+    // when disconnecting from the page the user will be removed from the users array
+    const user = remove_user(socket.id);
+    if (user) {
+      console.log(`User name: ${user.name} is and room is ${user.room}`);
+    }
+    if (user) {
+      io.to(user.room).emit("message", {
+        user: "admin",
+        text: `${user.name} has left the room.`,
+      });
+
+      // update users data in the room as well
+      io.to(user.room).emit("roomData", {
+        room: user.room,
+        users: get_users_in_room(user.room),
+      });
+    }
   });
 });
 
