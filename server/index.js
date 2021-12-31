@@ -1,8 +1,7 @@
 const express = require("express"); // using 'require' and not 'import' because we are in node here
-const socket_io = require("socket.io");
 const http = require("http");
 const router = require("./router");
-const cors = require("cors");
+const cors = require("cors")
 
 // importing helper functions
 const {
@@ -16,10 +15,35 @@ const PORT = process.env.PORT || 5001;
 
 // initialize server
 const app = express();
+
 const server = http.createServer(app);
 
+// const socket_io = require("socket.io")(server, {
+//   cors: {
+//     origin: "https://eloquent-lewin-283769.netlify.app",
+//   },
+// });
+// using routing created in router.js and enabling cors
+// var corsMiddleware = function(req, res, next) {
+//   res.header('Access-Control-Allow-Origin', '*'); //replace localhost with actual host
+//   res.header('Access-Control-Allow-Methods', 'OPTIONS, GET, PUT, PATCH, POST, DELETE');
+//   res.header('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With, Authorization');
+
+//   next();
+// }
+
+// cors and router
+// app.use(cors());
+app.use(router);
+
 // initialize we socket
-const io = socket_io(server);
+// const io = socket_io(server);
+
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "*",
+  },
+});
 
 // on even that connection is ready
 io.on("connection", (socket) => {
@@ -93,9 +117,5 @@ io.on("connection", (socket) => {
     }
   });
 });
-
-// using routing created in router.js
-app.use(router);
-app.use(cors())
 
 server.listen(PORT, () => console.log(`Server has started on PORT ${PORT}.`));

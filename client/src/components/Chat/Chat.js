@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import queryString from "query-string"; // for retrieving data from url
-import io from "socket.io-client";
+// import queryString from "query-string"; // for retrieving data from url
+import {io} from "socket.io-client";
 import { useLocation } from "react-router-dom";
 import InfoBar from "../InfoBar/InfoBar";
 import Input from "../Input/Input";
