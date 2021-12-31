@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 // import queryString from "query-string"; // for retrieving data from url
-import {io} from "socket.io-client";
+import { io } from "socket.io-client";
 import { useLocation } from "react-router-dom";
 import InfoBar from "../InfoBar/InfoBar";
 import Input from "../Input/Input";
 import Messages from "../Messages/Messages";
-import TextContainer from '../TextContainer/TextContainer';
-
+import TextContainer from "../TextContainer/TextContainer";
 
 import "./Chat.css";
 
@@ -20,10 +19,10 @@ const useQuery = () => {
   return React.useMemo(() => new URLSearchParams(search), [search]);
 };
 
-const Chat = (location) => {
+const Chat = () => {
   const [name, setName] = useState("");
   const [room, setRoom] = useState("");
-  const [users, setUsers] = useState('');
+  const [users, setUsers] = useState("");
   const [message, setMessage] = useState("");
   const [messagesArray, setMessagesArray] = useState([]);
 
@@ -68,9 +67,13 @@ const Chat = (location) => {
   useEffect(() => {
     // console.log("second useEffect")
     socket.on("message", (message) => {
-      // console.log("detected message event inside front end")
-      setMessagesArray([...messagesArray, message]);
-      // console.log(message, messagesArray);
+      if (message.user === "error") {
+        alert(message.text);
+      } else {
+        // console.log("detected message event inside front end")
+        setMessagesArray([...messagesArray, message]);
+        // console.log(message, messagesArray);
+      }
     });
 
     socket.on("roomData", ({ users }) => {
@@ -89,7 +92,7 @@ const Chat = (location) => {
           send_message={send_message}
         />
       </div>
-      <TextContainer users={users} userName={name}/>
+      <TextContainer users={users} userName={name} />
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import "./Join.css";
 
-console.log("test join");
+// console.log("test join");
 
 const Join = () => {
   let navigation = useNavigate();

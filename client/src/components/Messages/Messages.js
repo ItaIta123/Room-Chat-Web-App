@@ -4,7 +4,7 @@ import Message from '../Message/Message'
 import "./Messages.css";
 
 const Messages = ({ messagesArray, name }) => {
-  console.log(messagesArray)
+  // console.log(messagesArray)
   return (
   <ScrollToBottom className="messages">
     {messagesArray.map((message, i) => (

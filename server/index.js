@@ -1,7 +1,7 @@
 const express = require("express"); // using 'require' and not 'import' because we are in node here
 const http = require("http");
 const router = require("./router");
-const cors = require("cors")
+const cors = require("cors");
 
 // importing helper functions
 const {
@@ -88,11 +88,21 @@ io.on("connection", (socket) => {
   socket.on("user message", (message, callback) => {
     //console.log('Recieved a user message on the backend');
     const user = get_user(socket.id);
-    // console.log(`User is: ${user}`);
-    // send message to the whole room. Using 'io' as its the "parent" of the entire socket
-    io.to(user.room).emit("message", { user: user.name, text: message });
 
-    callback();
+    // sometimes socket.id does not match due to user's page refresh
+    if (!user) {
+      socket.emit("message", {
+        user: "error",
+        text: `Hey, please exit and return to the room. Your socket was lost.`,
+      });
+      callback();
+    } else {
+      // console.log(`User is: ${user}`);
+      // send message to the whole room. Using 'io' as its the "parent" of the entire socket
+      io.to(user.room).emit("message", { user: user.name, text: message });
+
+      callback();
+    }
   });
 
   socket.on("disconnect", () => {
