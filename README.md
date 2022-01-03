@@ -1,8 +1,10 @@
-# Room-Chat-Web-App
+# Web Chat application
 ## https://eloquent-lewin-283769.netlify.app/
 
-Web Chat application. Used React, Node.js, and Socket.io
-*JavaScript Mastery on YouTube*
+#### - React 
+#### - Node.js 
+#### - Socket.io
+
+* © JavaScript Mastery on YouTube*
 
 
-#
