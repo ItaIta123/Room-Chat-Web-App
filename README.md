@@ -1,5 +1,5 @@
 # Web Chat application
-## https://eloquent-lewin-283769.netlify.app/
+## https://itamars-web-chat-app.netlify.app/
 
 #### - React 
 #### - Node.js 
